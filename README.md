@@ -8,7 +8,7 @@ one version of JUnit to a newer JUnit version.
 The `junit3ToJUnit4.zsh` script in this repository is not perfect,
 but it goes a long way towards dealing with the most common problems.
 
-## Known Limitations
+### Known Limitations
 
 Does not address calls to:
 
