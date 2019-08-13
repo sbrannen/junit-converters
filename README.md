@@ -20,4 +20,8 @@ For these you need to use `@RunWith(Suite.class)`.
 
 ## Convert JUnit 4 to JUnit Jupiter
 
-See https://github.com/junit-pioneer/convert-junit4-to-junit5
+The `junit4ToJUnitJupiter.zsh` script in this repository helps
+with automatically modifying imports and annotation usage but
+does not assist with migrating assertions.
+
+See also: https://github.com/junit-pioneer/convert-junit4-to-junit5
