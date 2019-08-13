@@ -2,12 +2,14 @@
 
 ########################################################################
 #
-# Script for converting JUnit 4 code to JUnit Jupiter code on Mac OS X.
+# Script for converting JUnit 4 tests to JUnit Jupiter tests.
 #
-# This script does not migrate use of the `exception` and `timeout`
-# attributes or `@Test`.
+# Tested on Mac OS X.
 #
-# This script does not migrate JUnit 4 assertions.
+# This script does not migrate the following.
+#  - the `exception` and `timeout` attributes of `@Test`
+#  - JUnit 4 assertions
+#  - JUnit 4 rules
 #
 ########################################################################
 
