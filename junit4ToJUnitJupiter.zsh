@@ -11,6 +11,7 @@
 #
 ########################################################################
 
+# for file in src/test/groovy/**/*.groovy; do
 # for file in src/test/kotlin/**/*.kt; do
 for file in src/test/java/**/*.java; do
 
