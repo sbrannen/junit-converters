@@ -11,6 +11,7 @@
 #
 ########################################################################
 
+# for file in src/test/kotlin/**/*.kt; do
 for file in src/test/java/**/*.java; do
 
     # If the test class directly extends TestCase...
@@ -56,16 +57,24 @@ for file in src/test/java/**/*.java; do
             perl -0777 -pi -e 's/\@Ignore/\@Disabled/g' $file
         fi
 
+        # Replace @RunWith(SpringJUnit4ClassRunner.class) with 
+		# @ExtendWith(SpringExtension.class).
         # Replace @RunWith(MockitoJUnitRunner.class) with 
 		# @ExtendWith(MockitoExtension.class).
         if [[ `grep -m 1 -c 'org.junit.runner.RunWith' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/org\.junit\.runner\.RunWith/org.junit.jupiter.api.extension.ExtendWith/g' $file
         fi
-        if [[ `grep -m 1 -c 'org.mockito.junit.MockitoJUnitRunner' ${file}` -gt 0 ]]; then
-            perl -0777 -pi -e 's/org\.mockito\.junit\.MockitoJUnitRunner/org.mockito.junit.jupiter.MockitoExtension/g' $file
-        fi
         if [[ `grep -m 1 -c '@RunWith' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/\@RunWith/\@ExtendWith/g' $file
+        fi
+        if [[ `grep -m 1 -c 'org.springframework.test.context.junit4.SpringJUnit4ClassRunner' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/org\.springframework\.test\.context\.junit4\.SpringJUnit4ClassRunner/org.springframework.test.context.junit.jupiter.SpringExtension/g' $file
+        fi
+        if [[ `grep -m 1 -c 'SpringJUnit4ClassRunner' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/SpringJUnit4ClassRunner/SpringExtension/g' $file
+        fi
+        if [[ `grep -m 1 -c 'org.mockito.junit.MockitoJUnitRunner' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/org\.mockito\.junit\.MockitoJUnitRunner/org.mockito.junit.jupiter.MockitoExtension/g' $file
         fi
         if [[ `grep -m 1 -c 'MockitoJUnitRunner' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/MockitoJUnitRunner/MockitoExtension/g' $file
