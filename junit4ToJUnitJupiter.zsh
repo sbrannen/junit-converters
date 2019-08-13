@@ -2,7 +2,8 @@
 
 ########################################################################
 #
-# Script for converting JUnit 4 tests to JUnit Jupiter tests.
+# Script for converting JUnit 4 tests to JUnit Jupiter tests in Java,
+# Groovy, and Kotlin source code under `src/test/**`.
 #
 # Tested on Mac OS X.
 #
@@ -13,12 +14,13 @@
 #
 ########################################################################
 
-# for file in src/test/groovy/**/*.groovy; do
-# for file in src/test/kotlin/**/*.kt; do
-for file in src/test/java/**/*.java; do
+setopt null_glob
 
-    # If the test class directly extends TestCase...
-    if [[ `grep -m 1 -c -e '.*class .*Tests.*' ${file}` -ge 1 ]]; then
+for file in src/test/**/*.(java|groovy|kt); do
+
+    # If the current file contains a class whose name contains Test,
+	# Tests, or TestCase...
+    if [[ `grep -m 1 -c -E '.*class .*(Test|Tests|TestCase)+.*' ${file}` -ge 1 ]]; then
 
         echo "Processing: ${file}\n"
 
@@ -44,19 +46,19 @@ for file in src/test/java/**/*.java; do
             perl -0777 -pi -e 's/org\.junit\.Ignore/org.junit.jupiter.api.Disabled/g' $file
         fi
 
-        if [[ `grep -m 1 -c '@BeforeClass' $file` -gt 0 ]]; then
-            perl -0777 -pi -e 's/\@BeforeClass/\@BeforeAll/g' $file
+        if [[ `grep -m 1 -c '@BeforeClass' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/\@BeforeClass\n/\@BeforeAll\n/g' $file
         fi
-        if [[ `grep -m 1 -c '@AfterClass' $file` -gt 0 ]]; then
-            perl -0777 -pi -e 's/\@AfterClass/\@AfterAll/g' $file
+        if [[ `grep -m 1 -c '@AfterClass' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/\@AfterClass\n/\@AfterAll\n/g' $file
         fi
-        if [[ `grep -m 1 -c '@Before' $file` -gt 0 ]]; then
-            perl -0777 -pi -e 's/\@Before/\@BeforeEach/g' $file
+        if [[ `grep -m 1 -c '@Before' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/\@Before\n/\@BeforeEach\n/g' $file
         fi
-        if [[ `grep -m 1 -c '@After' $file` -gt 0 ]]; then
-            perl -0777 -pi -e 's/\@After/\@AfterEach/g' $file
+        if [[ `grep -m 1 -c '@After' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/\@After\n/\@AfterEach\n/g' $file
         fi
-        if [[ `grep -m 1 -c '@Ignore' $file` -gt 0 ]]; then
+        if [[ `grep -m 1 -c '@Ignore' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/\@Ignore/\@Disabled/g' $file
         fi
 
@@ -86,3 +88,4 @@ for file in src/test/java/**/*.java; do
     fi
 
 done
+
