@@ -34,7 +34,7 @@ for file in src/test/**/*.(java|groovy|kt); do
             perl -0777 -pi -e 's/org\.junit\.BeforeClass/org.junit.jupiter.api.BeforeAll/g' $file
         fi
         if [[ `grep -m 1 -c 'org.junit.AfterClass' ${file}` -gt 0 ]]; then
-            perl -0777 -pi -e 's/org\.junit\.AfterAll/org.junit.jupiter.api.AfterAll/g' $file
+            perl -0777 -pi -e 's/org\.junit\.AfterClass/org.junit.jupiter.api.AfterAll/g' $file
         fi
         if [[ `grep -m 1 -c 'org.junit.Before' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/org\.junit\.Before/org.junit.jupiter.api.BeforeEach/g' $file
