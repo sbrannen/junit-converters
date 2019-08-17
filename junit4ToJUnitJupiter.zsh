@@ -8,7 +8,8 @@
 # Tested on Mac OS X.
 #
 # This script does not migrate the following.
-#  - the `exception` and `timeout` attributes of `@Test`
+#  - the `exception` and `timeout` attributes of JUnit 4's @Test annotation
+#  - JUnit 4 @ParameterizedTest support
 #  - JUnit 4 assertions
 #  - JUnit 4 rules
 #
