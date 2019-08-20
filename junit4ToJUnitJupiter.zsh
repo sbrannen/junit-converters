@@ -9,9 +9,10 @@
 #
 # This script does not migrate the following.
 #  - the `exception` and `timeout` attributes of JUnit 4's @Test annotation
-#  - JUnit 4 @ParameterizedTest support
+#  - JUnit 4 parameterized test support
 #  - JUnit 4 assertions
 #  - JUnit 4 rules
+#  - JUnit 4 @FixMethodOrder support
 #
 ########################################################################
 
@@ -63,15 +64,20 @@ for file in src/test/**/*.(java|groovy|kt); do
             perl -0777 -pi -e 's/\@Ignore/\@Disabled/g' $file
         fi
 
-        # Replace @RunWith(SpringJUnit4ClassRunner.class) with 
-		# @ExtendWith(SpringExtension.class).
-        # Replace @RunWith(MockitoJUnitRunner.class) with 
-		# @ExtendWith(MockitoExtension.class).
+        # Replace @RunWith(SpringRunner.class) with @ExtendWith(SpringExtension.class),
+        # @RunWith(SpringJUnit4ClassRunner.class) with @ExtendWith(SpringExtension.class), and
+        # @RunWith(MockitoJUnitRunner.class) with @ExtendWith(MockitoExtension.class).
         if [[ `grep -m 1 -c 'org.junit.runner.RunWith' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/org\.junit\.runner\.RunWith/org.junit.jupiter.api.extension.ExtendWith/g' $file
         fi
         if [[ `grep -m 1 -c '@RunWith' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/\@RunWith/\@ExtendWith/g' $file
+        fi
+        if [[ `grep -m 1 -c 'org.springframework.test.context.junit4.SpringRunner' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/org\.springframework\.test\.context\.junit4\.SpringRunner/org.springframework.test.context.junit.jupiter.SpringExtension/g' $file
+        fi
+        if [[ `grep -m 1 -c 'SpringRunner' ${file}` -gt 0 ]]; then
+            perl -0777 -pi -e 's/SpringRunner/SpringExtension/g' $file
         fi
         if [[ `grep -m 1 -c 'org.springframework.test.context.junit4.SpringJUnit4ClassRunner' ${file}` -gt 0 ]]; then
             perl -0777 -pi -e 's/org\.springframework\.test\.context\.junit4\.SpringJUnit4ClassRunner/org.springframework.test.context.junit.jupiter.SpringExtension/g' $file
